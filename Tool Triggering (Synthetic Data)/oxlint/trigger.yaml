@@ -1,0 +1,20 @@
+tool: oxlint
+label: "oxlint"
+language: typescript
+node_version: "18"
+typescript_version: "5.9.3"
+branch: "TS-091"
+scenario: "1 - Monolithic"
+architecture: "Monolith"
+module: "flat"
+package_manager: "yarn (Berry)"
+bundler: "rollup"
+project: package.json
+tests: tests/
+tools_project: "Tool Triggering (Synthetic Data)/"
+pinned-version: "1.16.0"  # installed on demand into reports/.tool-cache, not a package.json dependency
+config: null
+target_files: [src]
+command: "oxlint src --format json"
+expects_findings: true
+produces: "reports/oxlint.json"
