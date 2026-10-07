@@ -6,8 +6,8 @@ cd "$REPO_ROOT"
 mkdir -p reports
 
 echo "[c8] version:"; node_modules/.bin/c8 --version
-node_modules/.bin/c8 --config tools/c8/.c8rc.json \
-  node_modules/.bin/mocha --config tools/mocha/.mocharc.cjs
+node_modules/.bin/c8 --config "Tool Triggering (Synthetic Data)/c8/.c8rc.json" \
+  node_modules/.bin/mocha --config "Tool Triggering (Synthetic Data)/mocha/.mocharc.cjs"
 echo
 echo "[c8] gate G2 -- coverage must be non-zero"
 node -e "
