@@ -1,12 +1,12 @@
 # Invalid TypeScript tool corpus -- boundary-version measured
 
-33 tool-named folders, one per tool, the exact negative-control *inverse* of `TypeScript-Tools-Clean`: every fixture there was built so the tool reports nothing wrong; every fixture here was rewritten so the tool genuinely finds something wrong, measured for real, not merely declared.
+40 tool-named folders, one per tool, the exact negative-control *inverse* of `TypeScript-Tools-Clean`: every fixture there was built so the tool reports nothing wrong; every fixture here was rewritten so the tool genuinely finds something wrong, measured for real, not merely declared.
 
 The bar set for this corpus was explicit: the defect in each fixture had to be *pervasive*, not a single planted token. Concretely, wherever a tool computes its own percentage (coverage, duplication, mutation score, license compliance, staleness, span-close ratio), the measured "badness" exceeds 50% of the fixture -- confirmed by actually running the real tool, not asserted. Where a tool has no inherent percentage of its own (cdxgen, npm-check-updates, debtmap, mewt, monocart-coverage-reports, opentelemetry-sdk-node), a small wrapper script reads that tool's own real output back and defines the same "majority wrong" signal explicitly, documented in that tool's own README.
 
 ## Boundary-version structure
 
-Identical to `TypeScript-Tools-Clean`: the same 25 of 33 tools are exploded into five per-tool subfolders, one per boundary Node.js major, using the **same package-version pins** (`pin_table.py` is reused byte-for-byte) -- only the fixture *content* under `src/`/`test/`/`tools/` differs.
+Identical to `TypeScript-Tools-Clean`: the same 25 of 40 tools are exploded into five per-tool subfolders, one per boundary Node.js major, using the **same package-version pins** (`pin_table.py` is reused byte-for-byte) -- only the fixture *content* under `src/`/`test/`/`tools/` differs.
 
 | Family | Node version | Role |
 | --- | --- | --- |
@@ -16,7 +16,7 @@ Identical to `TypeScript-Tools-Clean`: the same 25 of 33 tools are exploded into
 | `node24` | 24.21.0 (npm 11.19.0) | latest-1 |
 | `node26` | 26.10.0 (npm 11.19.1) | latest |
 
-The remaining 8 tools are out of scope for this corpus in the same shape as the clean one: 2 unversioned git-history miners (`diff-cover`, `pydriller` -- untouched, since a "wrong commit history" fixture isn't part of this build's brief), 5 tools always NOT INSTALLED in this sandbox regardless of corpus (`Bearer CLI`, `CVE Lite CLI`, `Grype`, `OSV-Scanner`, `SonarJS` -- blocked by the egress allowlist, not by fixture content), and `red-dragon` (no folder; a genuine roster defect, not a tool).
+The remaining 15 tools are single flat folders. Two unversioned git-history miners (`diff-cover`, `pydriller`) are untouched. Seven were added by the roster alignment of 2026-10-07 (`reson`, `git-hot`, `DepScout`, `TraceGraph`, `ORT`, `Dependabot`, `GitHub API`). `red-dragon` has a folder again (the earlier "roster defect" note was wrong). `Bearer CLI`, `CVE Lite CLI`, `Grype` and `OSV-Scanner` now carry data that gives them something to find; `SonarJS` is unchanged. See "Roster alignment (2026-10-07)" below.
 
 ## Measured results (25 versioned tools x 5 families = 125 cells)
 
@@ -85,3 +85,22 @@ Tools with no inherent percentage (Biome, ESLint, the two eslint plugins, oxlint
 - **`opentelemetry-sdk-node`** has no inherent pass/fail percentage (same situation as cdxgen/ncu/debtmap/mewt/monocart), so its own `tools/driver.ts` (legacy/modern variants, matching the clean corpus's own Node-version API split) defines the signal directly: spans opened vs. spans actually closed and exported, across a realistic batch of 10 relays.
 
 The exit-code/verdict vocabulary stays the same as the clean corpus and the rest of this project's corpora: CLEAN, FINDING, NOT_INSTALLED, and CODE-ONLY never collapse into each other. Here, the headline number is simply inverted by design: **0 CLEAN, 110 FINDING**, with every NOT_INSTALLED cell inherited unchanged from the clean corpus's own toolchain-availability measurements.
+
+## Roster alignment (2026-10-07)
+
+The tool list the team supplied (`TypeScript_All_Tools.xlsx`, 39 tools) is the roster. Before this pass the Invalid copies of `Bearer CLI`, `CVE Lite CLI`, `Grype`, `OSV-Scanner`, and `SonarJS` carried the same content as the Clean ones, so they could not report anything, and `reson`, `git-hot`, `DepScout`, `TraceGraph`, `ORT`, `Dependabot` and `GitHub API` had no folder.
+
+| Tool | What is wrong in the Invalid fixture | Result |
+| --- | --- | --- |
+| `reson` | `summariseNorth`, `summariseSouth`, `summariseEast`: three 13-line blocks identical apart from names | measured: 3 duplicate blocks, 39 lines |
+| `git-hot` | one line rewritten on every commit of a generated history | measured: max churn 17 |
+| `DepScout` | three deprecated, long-unreleased packages (`request`, `node-uuid`, `left-pad`) | measured: alerts on `node-uuid` and `left-pad` |
+| `TraceGraph` | a crossing that throws, so the trace holds an `error` event | measured: 8 events, 1 `error` |
+| `ORT` | a GPL-3.0-or-later dependency (`ffmpeg-static` 5.3.0) next to permissive ones | not run (JVM tool) |
+| `Dependabot` | `lodash` 4.17.15, `minimist` 1.2.5, `axios` 0.21.0, `node-fetch` 2.6.0, `tar` 6.1.0 | not run (needs a GitHub repository) |
+| `GitHub API` | `upstream.txt` names the deprecated `request/request` | not run (sandbox GitHub API restriction) |
+| `red-dragon` | two dead stores (scratch, spare) and two maybe-uninitialised reads (delta, label) in `src/pumpRoom.ts` | measured |
+| `Bearer CLI` | hardcoded password, MD5/SHA-1 hashing, `Math.random()` code, SQL and OS-command concatenation, sensitive data logged | patterns written to Bearer's documented rules; scan not completed here |
+| `CVE Lite CLI`, `Grype`, `OSV-Scanner` | the five vulnerable pins above in `package.json` / `sbom.cdx.json` (no lockfile) | `OSV-Scanner` parses the SBOM (7 packages) |
+
+**No lockfile anywhere in this folder**, for the reason given in the Clean README: a sub-folder lockfile makes Testable treat the folder as a project, so the vulnerable data is carried by exact-pinned `package.json` entries and CycloneDX SBOMs.
