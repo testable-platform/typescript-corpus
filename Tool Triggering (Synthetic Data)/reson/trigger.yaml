@@ -1,0 +1,20 @@
+tool: reson
+label: "reson"
+language: typescript
+node_version: "14"
+typescript_version: "5.1.6"
+branch: "TS-040"
+scenario: "2 - Microservices"
+architecture: "Microservices"
+module: "workspace"
+package_manager: "bun"
+bundler: "vite"
+project: packages/domain/package.json
+tests: tests/
+tools_project: "Tool Triggering (Synthetic Data)/"
+pinned-version: null  # not an npm package -- see the runner
+config: null
+target_files: [packages/domain/src]
+command: "reson --source-path packages/domain/src --output-format json --output-file reports/reson.json --threshold 10 --min-ast-nodes 12"
+expects_findings: true
+produces: "reports/reson.json"

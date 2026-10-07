@@ -1,0 +1,20 @@
+tool: ts-unused-exports
+label: "ts-unused-exports"
+language: typescript
+node_version: "14"
+typescript_version: "5.1.6"
+branch: "TS-040"
+scenario: "2 - Microservices"
+architecture: "Microservices"
+module: "workspace"
+package_manager: "bun"
+bundler: "vite"
+project: packages/domain/package.json
+tests: tests/
+tools_project: "Tool Triggering (Synthetic Data)/"
+pinned-version: "11.0.1"  # installed on demand into reports/.tool-cache, not a package.json dependency
+config: "tsconfig.json"
+target_files: [packages/domain/src]
+command: "ts-unused-exports tsconfig.json --showLineNumber --findCompletelyUnusedFiles"
+expects_findings: true
+produces: "reports/ts-unused-exports.txt"

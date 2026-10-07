@@ -1,6 +1,6 @@
 {
   "branchId": "TS-040",
-  "repository": "typescript-n12-001-005",
+  "repository": "typescript-n14-040-044",
   "language": "TypeScript",
   "typescriptVersion": "5.1.6",
   "nodeVersion": "14",
@@ -22,7 +22,7 @@
     "packages/*",
     "services/*"
   ],
-  "toolsWired": 28,
+  "toolsWired": 46,
   "bundlerNote": "vite 4.5.14 -- newest supporting Node 14 (5+ needs ^18||>=20). Transform: its own bundled esbuild 0.18.x. Linker: Rollup.",
   "coveragePrimary": "c8",
   "coverageCrossCheck": "nyc + ts-node",
@@ -46,8 +46,8 @@
   },
   "toolsSkipped": {
     "knip": "no published version supports Node 14 either -- current major needs ^20.19 || >=22.12",
-    "OSV-Scanner": "api.osv.dev unreachable -- 403 at the egress proxy",
-    "npm downloads API": "api.npmjs.org unreachable -- 403 at the egress proxy",
-    "npm-check-updates@19.6.6": "requires Node >=18; pinned to 16.14.20 instead"
+    "npm-check-updates@19.6.6": "requires Node >=18; pinned to 16.14.20 instead",
+    "CVE Lite CLI": "cve-lite-cli declares Node >=18 in every release (oldest 1.0.0); no release runs on Node 16 or older",
+    "monocart-coverage-reports": "monocart-coverage-reports 2.13.2 does not load on Node 18 or older (the mcr CLI needs commander 14 / a Node 20 regular-expression flag); older releases ship no mcr CLI"
   }
 }
