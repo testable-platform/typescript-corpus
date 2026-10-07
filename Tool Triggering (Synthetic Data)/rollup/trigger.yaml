@@ -11,8 +11,8 @@ package_manager: "pnpm"
 bundler: "rollup"
 project: package.json
 tests: tests/
-tools_project: tools/
-pinned-version: "2.80.0"
+tools_project: "Tool Triggering (Synthetic Data)/"
+pinned-version: "3.30.0"
 config: "rollup.config.cjs"
 target_files: [src/index.ts]
 command: "node_modules/.bin/rollup --config rollup.config.cjs"
