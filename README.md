@@ -12,7 +12,7 @@ This is branch **TS_V12_ESBUILD_BUN_MONO** of the consolidated `typescript-corpu
 - **Scenario:** 1 - Monolithic
 - **Architecture:** Monolith
 - **Module layout:** flat
-- **Bundler:** esbuild 0.21.5
+- **Bundler:** esbuild 0.21.5 (esbuild transform and linker)
 - **Package manager:** bun 1.4.0
 - **Source root:** `src`
 
@@ -23,7 +23,7 @@ real Node 12.22.12 interpreter. None was written from memory.
 
 ## Supported tools
 
-26 tool families are wired. Each has a folder under `Tool Triggering (Synthetic Data)/` containing a
+42 tool families are wired. Each has a folder under `Tool Triggering (Synthetic Data)/` containing a
 `trigger.yaml` manifest, a runner, and its configuration.
 
 | Family | Pinned | Family | Pinned |
@@ -41,6 +41,14 @@ real Node 12.22.12 interpreter. None was written from memory.
 | jscpd | 3.2.1 | OpenTelemetry sdk-node | 0.29.2 |
 | Grype | v0.110.0 (binary) | Lizard | pip |
 | pydriller | pip | GitHub Advisories + API | REST |
+| cccc | 3.2.0 (apt) | debtmap | 0.24.1 (cargo) |
+| oxlint | 1.16.0 | Bearer CLI | v2.1.1 (binary) |
+| license-checker-rseidelsohn | 1.2.2 | OSV-Scanner | OSV API v1 (CLI v2.6.0) |
+| oxc-coverage-instrument | 0.13.0 | mewt | 4.0.0 (cargo) |
+| diff-cover | 10.6.0 (pip) | ts-unused-exports | 11.0.1 |
+| red-dragon | c287bb2 (git) | Opengrep | v1.30.1 (binary) |
+| covgate | 0.2.0 (cargo) | reson | v1.4.1 (cargo) |
+| git-hot | 0.11.1 (pip) | npm downloads API | api.npmjs.org |
 
 ### Tools deliberately NOT wired
 
@@ -50,10 +58,12 @@ Skipping these is a finding, not an omission. See [`dataset.json`](dataset.json)
 |---|---|
 | knip | no published version supports Node 12 |
 | vitest + @vitest/coverage-v8 | no published version supports Node 12 |
-| @biomejs/biome | oldest published version already requires Node >=14.21.3 |
-| OSV-Scanner | `api.osv.dev` unreachable -- 403 at the egress proxy |
-| npm downloads API | `api.npmjs.org` unreachable -- 403 at the egress proxy |
-| npm-check-updates 19.6.6 | requires Node >=18; 12.5.12 is pinned instead |
+| @biomejs/biome | oldest published version requires Node >=14.21.3 |
+| npm-check-updates 19.6.6 | requires Node >=18; pinned to 12.5.12 instead |
+| CVE Lite CLI | cve-lite-cli declares Node >=18 in every release (oldest 1.0.0); no release runs on Node 16 or older |
+| monocart-coverage-reports | monocart-coverage-reports 2.13.2 does not load on Node 18 or older (the mcr CLI needs commander 14 / a Node 20 regular-expression flag); older releases ship no mcr CLI |
+| DepScout | deps-scout 1.0.0 uses optional-call syntax that Node 12 cannot parse |
+| TraceGraph (@tracegraph/trace-js) | @tracegraph/trace-js 0.3.1 uses the ?? operator, which Node 12 cannot parse |
 
 Declaring any of these would have produced a metric that cannot be computed.
 
@@ -62,11 +72,12 @@ Declaring any of these would have produced a metric that cannot be computed.
 ```bash
 # bun is a standalone binary, not an npm package -- see Tool Triggering (Synthetic Data)/npm-audit/run_npm_audit.sh
 bun install --frozen-lockfile
-make build
+bun run build
+bun run bundle
 ```
 
-`make build` type-checks with `tsc --noEmit`, emits CommonJS + declarations to
-`dist/`, then bundles with **esbuild 0.21.5** and **executes the bundle**.
+`bun run build` type-checks with `tsc --noEmit` and emits CommonJS + declarations to
+`dist/`; `bun run bundle` then bundles with **esbuild 0.21.5 (esbuild transform and linker)** and **executes the bundle**.
 Emitting is not proof; running it is.
 
 ## Run
@@ -78,8 +89,8 @@ node dist/src/index.js
 ## Test
 
 ```bash
-make test        # mocha over tests/
-make coverage    # c8 (primary) AND nyc + ts-node (cross-check)
+bun run test        # mocha over tests/
+bun run coverage    # c8 (primary) AND nyc + ts-node (cross-check)
 ```
 
 Both coverage tools must report non-zero. They deliberately disagree: c8 reads
@@ -137,7 +148,7 @@ Three sibling folders sit at the repo root, alongside this branch's own
 `Tool Triggering (Synthetic Data)/` (above).
 
 ### `Tool Triggering (Tool Github Test data)/`
-Each of the 33 tool subfolders is that tool's own real upstream code and test
+Each of the 39 tool subfolders is that tool's own real upstream code and test
 suite, pulled as-is from its actual GitHub project -- not generated. `covgate/`
 is the clearest case: it's genuinely Rust, not TypeScript -- `cli_interface.rs`,
 `coverage_parse.rs`, `gate.rs`, `git_module.rs`, `metrics.rs`,
@@ -145,10 +156,10 @@ is the clearest case: it's genuinely Rust, not TypeScript -- `cli_interface.rs`,
 and `support/` test directories, straight from the covgate project. `ESLint/`,
 `StrykerJS/`, `Opengrep/`, `pydriller/` and the rest are each that project's
 own real test suite. A correct run finds whatever that upstream project's own
-tests genuinely contain.
+tests genuinely contain. `TraceGraph/` is the exception: it holds only a note, because that project publishes no public repository.
 
 ### `Tool Clean (Synthetic Data)/`
-Most of the 33 tools each carry 5 generated fixture packages, one per Node
+25 of the 40 tools each carry 5 generated fixture packages, one per Node
 family (12, 14, 20, 24, 26), engineered to be clean so the tool should report
 zero findings: the **Tool Clean (100% pass)** condition. `covgate` is the
 exception within the exception: because it builds a native binary per Node
@@ -157,13 +168,13 @@ full self-contained package with its own git history, plus a 6th git history
 at the `covgate/` root -- 6 separate repositories in total. `diff-cover` and
 `pydriller` operate on git history rather than language syntax, so each
 carries one real git repository's worth of history instead of 5 per-version
-copies. All 8 of these git histories (6 covgate + diff-cover + pydriller) are
+copies. 13 other tools (`Bearer CLI`, `CVE Lite CLI`, `DepScout`, `Dependabot`, `GitHub API`, `Grype`, `ORT`, `OSV-Scanner`, `SonarJS`, `TraceGraph`, `git-hot`, `red-dragon`, `reson`) carry a single flat `src/` fixture rather than per-Node copies. All 8 of these git histories (6 covgate + diff-cover + pydriller) are
 restored from `_git-bundles/` via `restore-git.ps1` rather than kept as live
 `.git` folders, so a plain file copy never silently drops their content as a
 submodule-style gitlink.
 
 ### `Tool Invalid (Synthetic Data)/`
-Same shape as Clean -- 33 tools, the same 5-Node-version pattern, and the same
+Same shape as Clean -- 40 tools, the same 5-Node-version pattern, and the same
 covgate exception -- but engineered so every fixture makes the tool flag or
 fail rather than pass: the **Tool Invalid** condition. Only covgate's 6 git
 histories needed bundling here (`_git-bundles/` + `restore-git.ps1`, alongside
@@ -194,15 +205,20 @@ typescript-corpus/  (TS_V12_ESBUILD_BUN_MONO)
 |-- .github/  (1 files)
 |-- src/  (15 files)
 |-- tests/  (5 files)
-|-- Tool Triggering (Synthetic Data)/  (63 files)
+|-- Tool Clean (Synthetic Data)/  (652 files)
+|-- Tool Invalid (Synthetic Data)/  (864 files)
+|-- Tool Triggering (Synthetic Data)/  (100 files)
+|-- Tool Triggering (Tool Github Test data)/  (22088 files)
 |-- .editorconfig
 |-- .eslintrc.cjs
+|-- .gitattributes
 |-- .gitignore
 |-- .jscpd.json
 |-- .madgerc
 |-- .npmrc
 |-- .nvmrc
-|-- Makefile
+|-- README.md
+|-- bun.lock
 |-- bunfig.toml
 |-- dataset.json
 |-- package.json
