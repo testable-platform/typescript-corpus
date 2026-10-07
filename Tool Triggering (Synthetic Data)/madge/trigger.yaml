@@ -11,7 +11,7 @@ package_manager: "bun"
 bundler: "vite"
 project: packages/domain/package.json
 tests: tests/
-tools_project: tools/
+tools_project: "Tool Triggering (Synthetic Data)/"
 pinned-version: "5.0.2"
 config: ".madgerc"
 target_files: [packages/domain/src]
