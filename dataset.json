@@ -1,6 +1,6 @@
 {
   "branchId": "TS-017",
-  "repository": "typescript-n12-001-005",
+  "repository": "typescript-n12-016-020",
   "language": "TypeScript",
   "typescriptVersion": "5.0.4",
   "nodeVersion": "12",
@@ -17,7 +17,7 @@
     "typescript-n12-ts-017"
   ],
   "workspaces": [],
-  "toolsWired": 26,
+  "toolsWired": 42,
   "bundlerNote": "rollup 2.80.0 -- newest supporting Node 12 (3.x needs >=14.18). Transform: tsc 5.0.4 via @rollup/plugin-typescript 8.5.0. Linker: Rollup.",
   "coveragePrimary": "c8",
   "coverageCrossCheck": "nyc + ts-node",
@@ -43,8 +43,10 @@
     "knip": "no published version supports Node 12",
     "vitest": "no published version supports Node 12",
     "@biomejs/biome": "oldest published version requires Node >=14.21.3",
-    "OSV-Scanner": "api.osv.dev unreachable -- 403 at the egress proxy",
-    "npm downloads API": "api.npmjs.org unreachable -- 403 at the egress proxy",
-    "npm-check-updates@19.6.6": "requires Node >=18; pinned to 12.5.12 instead"
+    "npm-check-updates@19.6.6": "requires Node >=18; pinned to 12.5.12 instead",
+    "CVE Lite CLI": "cve-lite-cli declares Node >=18 in every release (oldest 1.0.0); no release runs on Node 16 or older",
+    "monocart-coverage-reports": "monocart-coverage-reports 2.13.2 does not load on Node 18 or older (the mcr CLI needs commander 14 / a Node 20 regular-expression flag); older releases ship no mcr CLI",
+    "DepScout": "deps-scout 1.0.0 uses optional-call syntax that Node 12 cannot parse",
+    "TraceGraph (@tracegraph/trace-js)": "@tracegraph/trace-js 0.3.1 uses the ?? operator, which Node 12 cannot parse"
   }
 }
