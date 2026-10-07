@@ -1,0 +1,19 @@
+tool: tracegraph
+label: "TraceGraph (@tracegraph/trace-js)"
+language: typescript
+node_version: "14"
+typescript_version: "5.1.6"
+branch: "TS-048"
+scenario: "2 - Microservices"
+architecture: "Microservices"
+module: "workspace"
+package_manager: "bun"
+bundler: "rollup"
+project: packages/domain/package.json
+tests: tests/
+tools_project: "Tool Triggering (Synthetic Data)/"
+pinned-version: "0.3.1"  # installed on demand into reports/.tool-cache, not a package.json dependency
+config: null
+target_files: [packages/domain/src/services]
+command: "node trace_driver.cjs <install dir> packages/domain/src reports/tracegraph"
+produces: "reports/tracegraph/ -- JSONL trace events"
