@@ -11,9 +11,9 @@ package_manager: "yarn (Berry)"
 bundler: "rollup"
 project: package.json
 tests: tests/
-tools_project: tools/
-pinned-version: "18.0.0"
+tools_project: "Tool Triggering (Synthetic Data)/"
+pinned-version: "19.0.0"
 config: "tsconfig.json"
 target_files: [src]
-command: "node tools/ts-morph/run_ts_morph.js"
+command: "node 'Tool Triggering (Synthetic Data)/ts-morph/run_ts_morph.js'"
 produces: "per-function inventory: name, params, statements, depth"
