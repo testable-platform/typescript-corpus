@@ -1,0 +1,19 @@
+tool: mewt
+label: "mewt"
+language: typescript
+node_version: "12"
+typescript_version: "5.0.4"
+branch: "TS-011"
+scenario: "1 - Monolithic"
+architecture: "Monolith"
+module: "flat"
+package_manager: "yarn (Berry)"
+bundler: "vite"
+project: package.json
+tests: tests/
+tools_project: "Tool Triggering (Synthetic Data)/"
+pinned-version: null  # not an npm package -- see the runner
+config: null
+target_files: [src/models/tax-table.ts]
+command: "mewt run src/models/tax-table.ts --test.cmd <mocha runner>"
+produces: "reports/mewt.sqlite"
