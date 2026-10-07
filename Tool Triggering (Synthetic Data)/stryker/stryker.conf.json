@@ -2,7 +2,7 @@
   "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
   "packageManager": "pnpm",
   "testRunner": "mocha",
-  "mochaOptions": { "config": "tools/mocha/.mocharc.cjs" },
+  "mochaOptions": { "config": "Tool Triggering (Synthetic Data)/mocha/.mocharc.cjs" },
   "mutate": ["packages/domain/src/services/**/*.ts", "packages/domain/src/models/**/*.ts", "!packages/domain/src/analysis/**"],
   "checkers": [],
   "reporters": ["progress", "clear-text", "json"],
