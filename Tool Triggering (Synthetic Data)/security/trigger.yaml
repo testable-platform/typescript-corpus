@@ -11,7 +11,7 @@ package_manager: "yarn (Berry)"
 bundler: "vite"
 project: package.json
 tests: tests/
-tools_project: tools/
+tools_project: "Tool Triggering (Synthetic Data)/"
 pinned-version: "2.1.1"
 config: ".eslintrc.cjs"
 target_files: [src/analysis/sast-fixture.ts, src/analysis/taint-fixture.ts]
