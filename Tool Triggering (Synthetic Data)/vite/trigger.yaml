@@ -11,8 +11,8 @@ package_manager: "pnpm"
 bundler: "vite"
 project: packages/domain/package.json
 tests: tests/
-tools_project: tools/
-pinned-version: "2.9.18"
+tools_project: "Tool Triggering (Synthetic Data)/"
+pinned-version: "4.5.14"
 config: "vite.config.ts"
 target_files: [packages/domain/src/index.ts]
 command: "node_modules/.bin/vite build --config vite.config.ts"
