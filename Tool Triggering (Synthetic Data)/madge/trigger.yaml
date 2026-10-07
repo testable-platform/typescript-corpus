@@ -11,8 +11,8 @@ package_manager: "bun"
 bundler: "vite"
 project: package.json
 tests: tests/
-tools_project: tools/
-pinned-version: "5.0.2"
+tools_project: "Tool Triggering (Synthetic Data)/"
+pinned-version: "7.0.0"
 config: ".madgerc"
 target_files: [src]
 command: "node_modules/.bin/madge --ts-config tsconfig.json src"
