@@ -8,7 +8,7 @@ mkdir -p reports
 # OSS Review Toolkit is a JVM application and is NOT installed here. The
 # license inventory is derived from the CycloneDX SBOM that cdxgen produces --
 # the same input ORT's analyzer would consume. Declared honestly as a proxy.
-test -f reports/sbom.json || bash tools/cdxgen/run_cdxgen.sh
+test -f reports/sbom.json || bash "Tool Triggering (Synthetic Data)/cdxgen/run_cdxgen.sh"
 node -e "
   const s = require('./reports/sbom.json');
   const tally = {};

@@ -1,0 +1,19 @@
+tool: license-checker
+label: "license-checker-rseidelsohn"
+language: typescript
+node_version: "12"
+typescript_version: "5.0.4"
+branch: "TS-002"
+scenario: "2 - Microservices"
+architecture: "Microservices"
+module: "workspace"
+package_manager: "npm"
+bundler: "esbuild"
+project: packages/domain/package.json
+tests: tests/
+tools_project: "Tool Triggering (Synthetic Data)/"
+pinned-version: "1.2.2"  # installed on demand into reports/.tool-cache, not a package.json dependency
+config: null
+target_files: [package.json]
+command: "license-checker-rseidelsohn --json --production --excludePrivatePackages --out reports/license-checker.json"
+produces: "reports/license-checker.json"
