@@ -16,4 +16,4 @@ pkgver() {
 }
 
 echo "[fast-check] version: $(pkgver fast-check)"
-node_modules/.bin/mocha --config tools/mocha/.mocharc.cjs --grep "properties" --reporter spec
+node_modules/.bin/mocha --config "Tool Triggering (Synthetic Data)/mocha/.mocharc.cjs" --grep "properties" --reporter spec
