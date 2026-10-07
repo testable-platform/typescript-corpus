@@ -6,7 +6,7 @@ cd "$REPO_ROOT"
 mkdir -p reports
 
 echo "[esbuild] version:"; node_modules/.bin/esbuild --version
-node tools/esbuild/esbuild.config.cjs
+node "Tool Triggering (Synthetic Data)/esbuild/esbuild.config.cjs"
 test -f build/bundle.cjs || { echo "[esbuild] FAIL: no bundle emitted"; exit 1; }
 echo "[esbuild] bundle emitted -- now proving it RUNS (gate 11)"
 node -e "
