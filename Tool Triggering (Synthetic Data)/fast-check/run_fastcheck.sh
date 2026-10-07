@@ -6,4 +6,4 @@ cd "$REPO_ROOT"
 mkdir -p reports
 
 echo "[fast-check] version: $(node -p "require('fast-check/package.json').version")"
-node_modules/.bin/mocha --config tools/mocha/.mocharc.cjs --grep "properties" --reporter spec
+node_modules/.bin/mocha --config "Tool Triggering (Synthetic Data)/mocha/.mocharc.cjs" --grep "properties" --reporter spec
