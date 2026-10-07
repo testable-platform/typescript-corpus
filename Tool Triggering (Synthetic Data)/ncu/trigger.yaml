@@ -11,8 +11,8 @@ package_manager: "bun"
 bundler: "rollup"
 project: packages/domain/package.json
 tests: tests/
-tools_project: tools/
-pinned-version: "12.5.12"
+tools_project: "Tool Triggering (Synthetic Data)/"
+pinned-version: "18.3.1"
 config: null
 target_files: [package.json]
 command: "node_modules/.bin/ncu --jsonUpgraded"
