@@ -22,7 +22,7 @@ if ! command -v grype >/dev/null 2>&1; then
   exit 0
 fi
 echo "[grype] version:"; grype version
-test -f reports/sbom.json || bash tools/cdxgen/run_cdxgen.sh
+test -f reports/sbom.json || bash "Tool Triggering (Synthetic Data)/cdxgen/run_cdxgen.sh"
 grype "sbom:reports/sbom.json" -o json > reports/grype.json || true
 node -e "
   const r = require('./reports/grype.json');

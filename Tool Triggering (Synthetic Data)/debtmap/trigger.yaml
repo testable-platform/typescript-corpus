@@ -1,0 +1,19 @@
+tool: debtmap
+label: "debtmap"
+language: typescript
+node_version: "18"
+typescript_version: "5.9.3"
+branch: "TS-082"
+scenario: "2 - Microservices"
+architecture: "Microservices"
+module: "workspace"
+package_manager: "npm"
+bundler: "vite"
+project: packages/domain/package.json
+tests: tests/
+tools_project: "Tool Triggering (Synthetic Data)/"
+pinned-version: null  # not an npm package -- see the runner
+config: null
+target_files: [packages/domain/src]
+command: "debtmap analyze packages/domain/src --languages typescript --format json --output reports/debtmap.json"
+produces: "reports/debtmap.json -- debt items per function"
