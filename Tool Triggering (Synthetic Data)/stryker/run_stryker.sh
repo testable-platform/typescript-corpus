@@ -6,7 +6,7 @@ cd "$REPO_ROOT"
 mkdir -p reports
 
 echo "[stryker] version: $(node -p "require('@stryker-mutator/core/package.json').version")"
-node_modules/.bin/stryker run tools/stryker/stryker.conf.json || true
+node_modules/.bin/stryker run "Tool Triggering (Synthetic Data)/stryker/stryker.conf.json" || true
 if [ -f reports/mutation/mutation.json ]; then
   node -e "
     const r = require('./reports/mutation/mutation.json');

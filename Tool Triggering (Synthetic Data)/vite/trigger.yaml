@@ -11,7 +11,7 @@ package_manager: "npm"
 bundler: "vite"
 project: package.json
 tests: tests/
-tools_project: tools/
+tools_project: "Tool Triggering (Synthetic Data)/"
 pinned-version: "2.9.18"
 config: "vite.config.ts"
 target_files: [src/index.ts]

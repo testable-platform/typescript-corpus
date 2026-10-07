@@ -6,8 +6,8 @@ cd "$REPO_ROOT"
 mkdir -p reports
 
 echo "[otel] sdk-node: $(node -p "require('@opentelemetry/sdk-node/package.json').version")"
-test -f dist/src/index.js || bash tools/typescript/run_tsc.sh
-node -r ./tools/opentelemetry/otel-bootstrap.js -e "require('./dist/src/index.js').run()"
+test -f dist/src/index.js || bash "Tool Triggering (Synthetic Data)/typescript/run_tsc.sh"
+node -r "./Tool Triggering (Synthetic Data)/opentelemetry/otel-bootstrap.js" -e "require('./dist/src/index.js').run()"
 node -e "
   const s = require('./reports/otel-spans.json');
   console.log('[otel] spans captured:', s.length);
