@@ -33,6 +33,6 @@ while read -r pkg ver; do
   [ $first -eq 0 ] && echo "," >> reports/advisories.json
   first=0
   printf '{"package":"%s","version":"%s","advisories":%s}' "$pkg" "$ver" "$resp" >> reports/advisories.json
-done < tools/grype/planted-pins.txt
+done < "Tool Triggering (Synthetic Data)/grype/planted-pins.txt"
 echo "]" >> reports/advisories.json
 echo "[advisories] written to reports/advisories.json"
