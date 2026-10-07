@@ -11,9 +11,9 @@ package_manager: "pnpm"
 bundler: "esbuild"
 project: package.json
 tests: tests/
-tools_project: tools/
-pinned-version: "5.6.1"
-config: "tools/stryker/stryker.conf.json"
+tools_project: "Tool Triggering (Synthetic Data)/"
+pinned-version: "7.3.0"
+config: "Tool Triggering (Synthetic Data)/stryker/stryker.conf.json"
 target_files: [src/services]
-command: "node_modules/.bin/stryker run tools/stryker/stryker.conf.json"
+command: "node_modules/.bin/stryker run 'Tool Triggering (Synthetic Data)/stryker/stryker.conf.json'"
 produces: "reports/mutation/mutation.json -- mutation score"
