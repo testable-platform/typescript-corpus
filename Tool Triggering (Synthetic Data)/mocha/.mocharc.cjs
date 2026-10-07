@@ -1,7 +1,7 @@
 "use strict";
 /* mocha runs the TypeScript directly through ts-node, so coverage tools can
  * instrument the .ts source rather than remapping compiled output -- see
- * tools/nyc/run_nyc.sh for why that distinction decides whether coverage is
+ * Tool Triggering (Synthetic Data)/nyc/run_nyc.sh for why that distinction decides whether coverage is
  * non-zero. */
 module.exports = {
   require: ["ts-node/register"],
