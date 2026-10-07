@@ -11,9 +11,9 @@ package_manager: "yarn (Berry)"
 bundler: "esbuild"
 project: package.json
 tests: tests/
-tools_project: tools/
+tools_project: "Tool Triggering (Synthetic Data)/"
 pinned-version: null  # not an npm package -- see the runner
 config: null
 target_files: [.git]
-command: "python3 tools/pydriller/run_pydriller.py"
+command: "python3 'Tool Triggering (Synthetic Data)/pydriller/run_pydriller.py'"
 produces: "reports/history.json -- churn, coupling and ownership"
