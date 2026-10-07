@@ -2,15 +2,15 @@
 /**
  * Tool integration entry point -- branch TS-051.
  *
- * The direct analogue of the Python family's tools/tool_integration.py, which
+ * The direct analogue of the Python family's tool_integration.py, which
  * is itself the ToolIntegration.targets analogue from the C# reference repo.
  * One command proves every tool is wired.
  *
- *   ts-node tools/tool_integration.ts            print the wiring banner
- *   ts-node tools/tool_integration.ts --list     machine-readable tool list
- *   ts-node tools/tool_integration.ts --verify   every tool has folder+manifest+runner
- *   ts-node tools/tool_integration.ts --run TOOL run one tool's runner
- *   ts-node tools/tool_integration.ts --run-all  run every runner in order
+ *   ts-node "Tool Triggering (Synthetic Data)/tool_integration.ts"            print the wiring banner
+ *   ts-node "Tool Triggering (Synthetic Data)/tool_integration.ts" --list     machine-readable tool list
+ *   ts-node "Tool Triggering (Synthetic Data)/tool_integration.ts" --verify   every tool has folder+manifest+runner
+ *   ts-node "Tool Triggering (Synthetic Data)/tool_integration.ts" --run TOOL run one tool's runner
+ *   ts-node "Tool Triggering (Synthetic Data)/tool_integration.ts" --run-all  run every runner in order
  *
  * FlintAtlas and WillowBrook had no equivalent of this file, no trigger
  * manifests and no runners; their CI ran `npm install && npm test` and invoked
@@ -21,7 +21,7 @@ import * as fs from "fs";
 import * as path from "path";
 
 const REPO_ROOT = path.resolve(__dirname, "..");
-const TOOLS_DIR = path.join(REPO_ROOT, "tools");
+const TOOLS_DIR = path.join(REPO_ROOT, "Tool Triggering (Synthetic Data)");
 
 export const NODE_TARGET = "16";
 export const TYPESCRIPT_VERSION = "5.5.4";
@@ -36,35 +36,53 @@ interface Wiring {
 }
 
 export const TOOL_WIRING: readonly Wiring[] = [
-  { dir: "typescript", label: "TypeScript compiler (tsc)", wiring: "pinned 5.0.4 -> type diagnostics (must be empty)" },
+  { dir: "typescript", label: "TypeScript compiler (tsc)", wiring: "pinned 5.5.4 -> type diagnostics (must be empty)" },
   { dir: "esbuild", label: "esbuild", wiring: "pinned 0.21.5 -> build/bundle.cjs + build/bundle.cjs.map, and the bundle is executed" },
   { dir: "mocha", label: "mocha", wiring: "pinned 10.8.2 -> test results (all must pass)" },
   { dir: "vitest", label: "vitest + @vitest/coverage-v8", wiring: "pinned 0.34.6 -> coverage-vitest/coverage-summary.json -- a THIRD independent coverage number, alongside c8 and nyc" },
   { dir: "biome", label: "biome", wiring: "pinned 2.5.11 -> planted findings expected" },
-  { dir: "c8", label: "c8 (V8 coverage, primary)", wiring: "pinned 8.0.1 -> coverage/coverage-summary.json -- MUST be non-zero (gate G2)" },
+  { dir: "c8", label: "c8 (V8 coverage, primary)", wiring: "pinned 9.1.0 -> coverage/coverage-summary.json -- MUST be non-zero (gate G2)" },
   { dir: "nyc", label: "nyc + ts-node (coverage cross-check)", wiring: "pinned 15.1.0 -> coverage-nyc/coverage-summary.json -- instruments .ts directly, never via source-map remap" },
   { dir: "eslint", label: "eslint", wiring: "pinned 8.57.1 -> planted findings expected" },
-  { dir: "sonarjs", label: "eslint-plugin-sonarjs", wiring: "pinned 0.15.0 -> planted findings expected" },
+  { dir: "sonarjs", label: "eslint-plugin-sonarjs", wiring: "pinned 1.0.4 -> planted findings expected" },
   { dir: "security", label: "eslint-plugin-security", wiring: "pinned 2.1.1 -> planted findings expected" },
   { dir: "eslint-scope", label: "eslint-scope", wiring: "pinned 7.2.2 -> scope/variable inventory per function" },
   { dir: "jscpd", label: "jscpd", wiring: "pinned 3.2.1 -> planted findings expected" },
-  { dir: "ts-morph", label: "ts-morph", wiring: "pinned 18.0.0 -> per-function inventory: name, params, statements, depth" },
+  { dir: "ts-morph", label: "ts-morph", wiring: "pinned 23.0.0 -> per-function inventory: name, params, statements, depth" },
   { dir: "ts-prune", label: "ts-prune", wiring: "pinned 0.10.3 -> planted findings expected" },
   { dir: "knip", label: "knip", wiring: "pinned 2.43.0 -> reports/knip.json -- unused files, exports and dependencies" },
-  { dir: "madge", label: "madge", wiring: "pinned 5.0.2 -> module graph, circular check, orphan list" },
-  { dir: "dependency-cruiser", label: "dependency-cruiser", wiring: "pinned 11.18.0 -> dependency graph + rule violations + fan-in/fan-out" },
-  { dir: "stryker", label: "@stryker-mutator/core", wiring: "pinned 5.6.1 -> reports/mutation/mutation.json -- mutation score" },
+  { dir: "madge", label: "madge", wiring: "pinned 7.0.0 -> module graph, circular check, orphan list" },
+  { dir: "dependency-cruiser", label: "dependency-cruiser", wiring: "pinned 13.1.5 -> dependency graph + rule violations + fan-in/fan-out" },
+  { dir: "stryker", label: "@stryker-mutator/core", wiring: "pinned 7.3.0 -> reports/mutation/mutation.json -- mutation score" },
   { dir: "fast-check", label: "fast-check", wiring: "pinned 4.9.0 -> property-based test results, 200 runs per property" },
-  { dir: "cdxgen", label: "@cyclonedx/cdxgen", wiring: "pinned 8.6.3 -> reports/sbom.json -- CycloneDX SBOM" },
+  { dir: "cdxgen", label: "@cyclonedx/cdxgen", wiring: "pinned 9.11.6 -> reports/sbom.json -- CycloneDX SBOM" },
   { dir: "ort", label: "OSS Review Toolkit (cdxgen license proxy)", wiring: "not an npm package -> reports/licenses.json -- license inventory derived from the cdxgen SBOM" },
-  { dir: "ncu", label: "npm-check-updates", wiring: "pinned 12.5.12 -> reports/outdated.json -- available upgrades" },
+  { dir: "ncu", label: "npm-check-updates", wiring: "pinned 16.14.20 -> reports/outdated.json -- available upgrades" },
   { dir: "npm-audit", label: "npm audit / npm ls", wiring: "not an npm package -> planted findings expected" },
-  { dir: "opentelemetry", label: "@opentelemetry/sdk-node", wiring: "pinned 0.29.2 -> reports/otel-spans.json -- spans emitted by an instrumented run" },
+  { dir: "opentelemetry", label: "@opentelemetry/sdk-node", wiring: "pinned 0.57.2 -> reports/otel-spans.json -- spans emitted by an instrumented run" },
   { dir: "grype", label: "Grype", wiring: "not an npm package -> planted findings expected" },
   { dir: "lizard", label: "Lizard", wiring: "not an npm package -> reports/lizard.csv -- CCN and token counts. See the caveat in the README" },
   { dir: "pydriller", label: "pydriller", wiring: "not an npm package -> reports/history.json -- churn, coupling and ownership" },
   { dir: "github-advisories", label: "Dependabot / GitHub Security Advisories API", wiring: "not an npm package -> planted findings expected" },
   { dir: "github-api", label: "GitHub API (repos + releases)", wiring: "not an npm package -> reports/upstream.json -- repo metadata and latest release" },
+  { dir: "cccc", label: "cccc", wiring: "not an npm package -> reports/cccc/cccc.xml -- C/C++/Java metrics; no TypeScript front end (see the runner)" },
+  { dir: "debtmap", label: "debtmap", wiring: "not an npm package -> reports/debtmap.json -- technical-debt and complexity items" },
+  { dir: "oxlint", label: "oxlint", wiring: "pinned 1.16.0 -> reports/oxlint.json -- diagnostics; installed on demand, not a package.json dependency" },
+  { dir: "bearer", label: "Bearer CLI", wiring: "not an npm package -> reports/bearer.json -- SAST and data-flow findings" },
+  { dir: "license-checker", label: "license-checker-rseidelsohn", wiring: "pinned 3.3.0 -> reports/license-checker.json -- licence of every production package" },
+  { dir: "osv-scanner", label: "OSV-Scanner", wiring: "not an npm package -> reports/osv.json -- known-vulnerable packages via POST api.osv.dev/v1/querybatch" },
+  { dir: "oxc-coverage", label: "oxc-coverage-instrument", wiring: "pinned 0.13.0 -> reports/oxc-coverage.json -- Istanbul coverage map of every source file (library; no CLI)" },
+  { dir: "mewt", label: "mewt", wiring: "not an npm package -> reports/mewt.sqlite -- mutants killed or surviving the mocha suite" },
+  { dir: "diff-cover", label: "diff-cover", wiring: "not an npm package -> reports/diff-cover.json -- coverage of the lines changed since the previous commit" },
+  { dir: "ts-unused-exports", label: "ts-unused-exports", wiring: "pinned 11.0.1 -> reports/ts-unused-exports.txt -- exports no module imports" },
+  { dir: "red-dragon", label: "red-dragon", wiring: "not an npm package -> reports/red-dragon.json -- IR, CFG, reaching definitions and def-use chains" },
+  { dir: "opengrep", label: "Opengrep", wiring: "not an npm package -> reports/opengrep.json -- local-rule findings on the planted fixtures" },
+  { dir: "covgate", label: "covgate", wiring: "not an npm package -> reports/covgate.md -- diff-coverage gate on Istanbul JSON" },
+  { dir: "reson", label: "reson", wiring: "not an npm package -> reports/reson.json -- AST-level duplicate blocks" },
+  { dir: "depscout", label: "DepScout", wiring: "pinned 1.0.0 -> reports/depscout.txt -- maintainability indicators for every dependency (needs the npm registry and GitHub API)" },
+  { dir: "tracegraph", label: "TraceGraph (@tracegraph/trace-js)", wiring: "pinned 0.3.1 -> reports/tracegraph/*.events.jsonl.tmp -- traced call path through the order service" },
+  { dir: "git-hot", label: "git-hot", wiring: "not an npm package -> reports/git-hot.txt -- live-line churn and age per file" },
+  { dir: "npm-downloads", label: "npm downloads API", wiring: "not an npm package -> reports/npm-downloads.json -- weekly downloads of every direct dependency" },
 ];
 
 function runnerFor(dir: string): string | null {
@@ -100,14 +118,14 @@ function verify(): number {
   for (const t of TOOL_WIRING) {
     const folder = path.join(TOOLS_DIR, t.dir);
     if (!fs.existsSync(folder)) {
-      problems.push(`${t.label}: missing folder tools/${t.dir}`);
+      problems.push(`${t.label}: missing folder Tool Triggering (Synthetic Data)/${t.dir}`);
       continue;
     }
     if (!fs.existsSync(path.join(folder, "trigger.yaml"))) {
-      problems.push(`${t.label}: missing tools/${t.dir}/trigger.yaml`);
+      problems.push(`${t.label}: missing Tool Triggering (Synthetic Data)/${t.dir}/trigger.yaml`);
     }
     if (runnerFor(t.dir) === null) {
-      problems.push(`${t.label}: no runner script in tools/${t.dir}`);
+      problems.push(`${t.label}: no runner script in Tool Triggering (Synthetic Data)/${t.dir}`);
     }
   }
   if (problems.length > 0) {
