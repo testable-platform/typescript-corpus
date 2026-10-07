@@ -2,15 +2,15 @@
 /**
  * Tool integration entry point -- branch TS-014.
  *
- * The direct analogue of the Python family's tools/tool_integration.py, which
+ * The direct analogue of the Python family's tool_integration.py, which
  * is itself the ToolIntegration.targets analogue from the C# reference repo.
  * One command proves every tool is wired.
  *
- *   ts-node tools/tool_integration.ts            print the wiring banner
- *   ts-node tools/tool_integration.ts --list     machine-readable tool list
- *   ts-node tools/tool_integration.ts --verify   every tool has folder+manifest+runner
- *   ts-node tools/tool_integration.ts --run TOOL run one tool's runner
- *   ts-node tools/tool_integration.ts --run-all  run every runner in order
+ *   ts-node "Tool Triggering (Synthetic Data)/tool_integration.ts"            print the wiring banner
+ *   ts-node "Tool Triggering (Synthetic Data)/tool_integration.ts" --list     machine-readable tool list
+ *   ts-node "Tool Triggering (Synthetic Data)/tool_integration.ts" --verify   every tool has folder+manifest+runner
+ *   ts-node "Tool Triggering (Synthetic Data)/tool_integration.ts" --run TOOL run one tool's runner
+ *   ts-node "Tool Triggering (Synthetic Data)/tool_integration.ts" --run-all  run every runner in order
  *
  * FlintAtlas and WillowBrook had no equivalent of this file, no trigger
  * manifests and no runners; their CI ran `npm install && npm test` and invoked
@@ -21,7 +21,7 @@ import * as fs from "fs";
 import * as path from "path";
 
 const REPO_ROOT = path.resolve(__dirname, "..");
-const TOOLS_DIR = path.join(REPO_ROOT, "tools");
+const TOOLS_DIR = path.join(REPO_ROOT, "Tool Triggering (Synthetic Data)");
 
 export const NODE_TARGET = "12";
 export const TYPESCRIPT_VERSION = "5.0.4";
@@ -62,6 +62,22 @@ export const TOOL_WIRING: readonly Wiring[] = [
   { dir: "pydriller", label: "pydriller", wiring: "not an npm package -> reports/history.json -- churn, coupling and ownership" },
   { dir: "github-advisories", label: "Dependabot / GitHub Security Advisories API", wiring: "not an npm package -> planted findings expected" },
   { dir: "github-api", label: "GitHub API (repos + releases)", wiring: "not an npm package -> reports/upstream.json -- repo metadata and latest release" },
+  { dir: "cccc", label: "cccc", wiring: "not an npm package -> reports/cccc/cccc.xml -- C/C++/Java metrics; no TypeScript front end (see the runner)" },
+  { dir: "debtmap", label: "debtmap", wiring: "not an npm package -> reports/debtmap.json -- technical-debt and complexity items" },
+  { dir: "oxlint", label: "oxlint", wiring: "pinned 1.16.0 -> reports/oxlint.json -- diagnostics; installed on demand, not a package.json dependency" },
+  { dir: "bearer", label: "Bearer CLI", wiring: "not an npm package -> reports/bearer.json -- SAST and data-flow findings" },
+  { dir: "license-checker", label: "license-checker-rseidelsohn", wiring: "pinned 1.2.2 -> reports/license-checker.json -- licence of every production package" },
+  { dir: "osv-scanner", label: "OSV-Scanner", wiring: "not an npm package -> reports/osv.json -- known-vulnerable packages via POST api.osv.dev/v1/querybatch" },
+  { dir: "oxc-coverage", label: "oxc-coverage-instrument", wiring: "pinned 0.13.0 -> reports/oxc-coverage.json -- Istanbul coverage map of every source file (library; no CLI)" },
+  { dir: "mewt", label: "mewt", wiring: "not an npm package -> reports/mewt.sqlite -- mutants killed or surviving the mocha suite" },
+  { dir: "diff-cover", label: "diff-cover", wiring: "not an npm package -> reports/diff-cover.json -- coverage of the lines changed since the previous commit" },
+  { dir: "ts-unused-exports", label: "ts-unused-exports", wiring: "pinned 11.0.1 -> reports/ts-unused-exports.txt -- exports no module imports" },
+  { dir: "red-dragon", label: "red-dragon", wiring: "not an npm package -> reports/red-dragon.json -- IR, CFG, reaching definitions and def-use chains" },
+  { dir: "opengrep", label: "Opengrep", wiring: "not an npm package -> reports/opengrep.json -- local-rule findings on the planted fixtures" },
+  { dir: "covgate", label: "covgate", wiring: "not an npm package -> reports/covgate.md -- diff-coverage gate on Istanbul JSON" },
+  { dir: "reson", label: "reson", wiring: "not an npm package -> reports/reson.json -- AST-level duplicate blocks" },
+  { dir: "git-hot", label: "git-hot", wiring: "not an npm package -> reports/git-hot.txt -- live-line churn and age per file" },
+  { dir: "npm-downloads", label: "npm downloads API", wiring: "not an npm package -> reports/npm-downloads.json -- weekly downloads of every direct dependency" },
 ];
 
 function runnerFor(dir: string): string | null {
@@ -97,14 +113,14 @@ function verify(): number {
   for (const t of TOOL_WIRING) {
     const folder = path.join(TOOLS_DIR, t.dir);
     if (!fs.existsSync(folder)) {
-      problems.push(`${t.label}: missing folder tools/${t.dir}`);
+      problems.push(`${t.label}: missing folder Tool Triggering (Synthetic Data)/${t.dir}`);
       continue;
     }
     if (!fs.existsSync(path.join(folder, "trigger.yaml"))) {
-      problems.push(`${t.label}: missing tools/${t.dir}/trigger.yaml`);
+      problems.push(`${t.label}: missing Tool Triggering (Synthetic Data)/${t.dir}/trigger.yaml`);
     }
     if (runnerFor(t.dir) === null) {
-      problems.push(`${t.label}: no runner script in tools/${t.dir}`);
+      problems.push(`${t.label}: no runner script in Tool Triggering (Synthetic Data)/${t.dir}`);
     }
   }
   if (problems.length > 0) {
