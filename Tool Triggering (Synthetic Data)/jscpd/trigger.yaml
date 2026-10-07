@@ -11,8 +11,8 @@ package_manager: "yarn (Berry)"
 bundler: "esbuild"
 project: package.json
 tests: tests/
-tools_project: tools/
-pinned-version: "3.2.1"
+tools_project: "Tool Triggering (Synthetic Data)/"
+pinned-version: "5.0.16"
 config: ".jscpd.json"
 target_files: [src/services]
 command: "node_modules/.bin/jscpd --config .jscpd.json src"
