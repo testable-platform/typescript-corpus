@@ -1,0 +1,19 @@
+tool: depscout
+label: "DepScout"
+language: typescript
+node_version: "16"
+typescript_version: "5.5.4"
+branch: "TS-050"
+scenario: "2 - Microservices"
+architecture: "Microservices"
+module: "workspace"
+package_manager: "npm"
+bundler: "esbuild"
+project: packages/domain/package.json
+tests: tests/
+tools_project: "Tool Triggering (Synthetic Data)/"
+pinned-version: "1.0.0"  # installed on demand into reports/.tool-cache, not a package.json dependency
+config: "Tool Triggering (Synthetic Data)/depscout/scout.config.json"
+target_files: [package.json]
+command: "scout  (run in a scratch copy of package.json + scout.config.json)"
+produces: "reports/depscout.txt"
