@@ -6,4 +6,4 @@ cd "$REPO_ROOT"
 mkdir -p reports
 
 echo "[mocha] version:"; node_modules/.bin/mocha --version
-node_modules/.bin/mocha --config tools/mocha/.mocharc.cjs --reporter spec
+node_modules/.bin/mocha --config "Tool Triggering (Synthetic Data)/mocha/.mocharc.cjs" --reporter spec
