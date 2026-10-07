@@ -11,9 +11,9 @@ package_manager: "npm"
 bundler: "vite"
 project: packages/domain/package.json
 tests: tests/
-tools_project: tools/
+tools_project: "Tool Triggering (Synthetic Data)/"
 pinned-version: "10.8.2"
-config: "tools/mocha/.mocharc.cjs"
+config: "Tool Triggering (Synthetic Data)/mocha/.mocharc.cjs"
 target_files: [tests]
-command: "node_modules/.bin/mocha --config tools/mocha/.mocharc.cjs"
+command: "node_modules/.bin/mocha --config 'Tool Triggering (Synthetic Data)/mocha/.mocharc.cjs'"
 produces: "test results (all must pass)"
