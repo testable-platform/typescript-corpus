@@ -1,12 +1,12 @@
 {
   "branchId": "TS-079",
-  "repository": "typescript-n12-001-005",
+  "repository": "typescript-n18-078-082",
   "language": "TypeScript",
   "typescriptVersion": "5.9.3",
   "nodeVersion": "18",
   "nodeVersionVerified": "18.20.8",
   "bundler": "esbuild",
-  "bundlerVersion": "0.21.5",
+  "bundlerVersion": "0.28.2",
   "packageManager": "bun",
   "packageManagerVersion": "1.3.13",
   "architecture": "Monolith",
@@ -17,7 +17,7 @@
     "typescript-n12-ts-079"
   ],
   "workspaces": [],
-  "toolsWired": 29,
+  "toolsWired": 48,
   "bundlerNote": "esbuild 0.28.2 standalone (current major). Transform and linker are both esbuild.",
   "coveragePrimary": "c8",
   "coverageCrossCheck": "nyc + ts-node",
@@ -40,9 +40,7 @@
     ]
   },
   "toolsSkipped": {
-    "OSV-Scanner": "api.osv.dev unreachable -- 403 at the egress proxy",
-    "npm downloads API": "api.npmjs.org unreachable -- 403 at the egress proxy",
-    "npm-check-updates@19.6.6": "requires Node >=18; pinned to 16.14.20 instead",
+    "monocart-coverage-reports": "monocart-coverage-reports 2.13.2 does not load on Node 18 or older (the mcr CLI needs commander 14 / a Node 20 regular-expression flag); older releases ship no mcr CLI",
     "_note": "knip, vitest and biome were skipped on the Node 12 and Node 14 corpora because no release supported those runtimes. All three are wired here -- Node 16 is the first version where knip runs."
   }
 }
