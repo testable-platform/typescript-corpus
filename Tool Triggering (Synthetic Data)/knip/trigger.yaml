@@ -11,7 +11,7 @@ package_manager: "pnpm"
 bundler: "vite"
 project: package.json
 tests: tests/
-tools_project: tools/
+tools_project: "Tool Triggering (Synthetic Data)/"
 pinned-version: "2.43.0"
 config: "knip.json"
 target_files: [src, tests]

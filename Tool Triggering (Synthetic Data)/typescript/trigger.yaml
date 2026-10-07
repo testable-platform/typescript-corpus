@@ -11,8 +11,8 @@ package_manager: "pnpm"
 bundler: "vite"
 project: package.json
 tests: tests/
-tools_project: tools/
-pinned-version: "5.0.4"
+tools_project: "Tool Triggering (Synthetic Data)/"
+pinned-version: "5.5.4"
 config: "tsconfig.json"
 target_files: [src]
 command: "node_modules/.bin/tsc -p tsconfig.json --noEmit"
