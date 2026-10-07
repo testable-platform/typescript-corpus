@@ -11,7 +11,7 @@ package_manager: "yarn (Berry)"
 bundler: "rollup"
 project: packages/domain/package.json
 tests: tests/
-tools_project: tools/
+tools_project: "Tool Triggering (Synthetic Data)/"
 pinned-version: "2.80.0"
 config: "rollup.config.cjs"
 target_files: [packages/domain/src/index.ts]
