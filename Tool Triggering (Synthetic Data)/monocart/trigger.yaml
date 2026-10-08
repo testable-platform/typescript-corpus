@@ -1,0 +1,19 @@
+tool: monocart
+label: "monocart-coverage-reports"
+language: typescript
+node_version: "26"
+typescript_version: "5.9.3"
+branch: "TS-213"
+scenario: "1 - Monolithic"
+architecture: "Monolith"
+module: "flat"
+package_manager: "pnpm"
+bundler: "rollup"
+project: package.json
+tests: tests/
+tools_project: "Tool Triggering (Synthetic Data)/"
+pinned-version: "2.13.2"  # installed on demand into reports/.tool-cache, not a package.json dependency
+config: null
+target_files: [src]
+command: "mcr -r v8,console-summary,json-summary --outputDir reports/monocart -- mocha"
+produces: "reports/monocart/ -- merged V8 coverage report"
