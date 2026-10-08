@@ -1,16 +1,15 @@
 # Bearer CLI
 
-Synthetic, clean-by-design TypeScript project for **Bearer CLI**.
+Synthetic, **deliberately invalid** TypeScript project for **Bearer CLI** -- the negative-control twin of `TypeScript-Tools-Clean/Bearer CLI`, built so the tool genuinely finds something wrong rather than reporting clean.
 
-Package: bearer/bearer (Go binary / GitHub release)
-
-Domain: patient intake form handling (IntakeForm)
+Package: bearer/bearer 2.1.1 (Go binary / GitHub release)
+Domain: patient intake form handling (IntakeForm) (same fixture identity as the clean corpus; only the content is broken)
 
 **Not installed here**: see Notes for why, and what was checked instead.
 
-## What a passing result looks like
+## What was made wrong, and why it's wrong enough
 
-A Bearer scan of IntakeForm would report zero sensitive-data-flow findings -- raw notes are redacted to a length-only summary before storage and nothing is logged.
+`src/intakeForm.ts` now hardcodes a database password, hashes a social-security number with MD5 and SHA-1, builds a confirmation code from `Math.random()`, assembles SQL and an OS command by string concatenation, and writes an e-mail address, the social-security number and the password to `console.log`. The patterns were written to match Bearer's documented JavaScript rules (javascript_lang_hardcoded_secret, javascript_lang_weak_hash_md5, javascript_lang_weak_hash_sha1, javascript_lang_insufficiently_random_values, javascript_lang_sql_injection, javascript_lang_dynamic_os_command, javascript_lang_logger); the scan itself could not complete in the generating session, so no finding count is quoted.
 
 ## Command
 
@@ -20,4 +19,4 @@ bearer scan .
 
 ## Notes
 
-Bearer's real SAST/data-flow scanner ships only as a GitHub Release binary (curl-install script or Docker image); GitHub Releases return 403 here. The npm package literally named `bearer` is an unrelated HTTP auth-header micro-library (`bearer` @ 0.0.20, "Bearer authentication module using token and Authorization HTTP header") and was not substituted for it.
+Bearer's SAST / data-flow scanner ships as a GitHub release binary (v2.1.1: `bearer_2.1.1_linux_amd64.tar.gz`); the npm package literally named `bearer` is an unrelated HTTP auth-header micro-library. Correction to the earlier note: the release download itself works (HTTP 200 on 2026-10-07); what failed in the generating session is Bearer's first-run download of its default rules (`0 rules found for supported language, default rules could not be downloaded` -- bearer-rules returned 403), so the scan could not complete there. The Clean folder is therefore **expected** clean and not measured.
