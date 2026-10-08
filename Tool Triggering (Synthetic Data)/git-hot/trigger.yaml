@@ -1,0 +1,19 @@
+tool: git-hot
+label: "git-hot"
+language: typescript
+node_version: "24"
+typescript_version: "5.9.3"
+branch: "TS-192"
+scenario: "2 - Microservices"
+architecture: "Microservices"
+module: "workspace"
+package_manager: "bun"
+bundler: "rollup"
+project: packages/domain/package.json
+tests: tests/
+tools_project: "Tool Triggering (Synthetic Data)/"
+pinned-version: null  # not an npm package -- see the runner
+config: null
+target_files: [.]
+command: "git-hot --format '{max(churn):5d} {days(median(line_age)):5d} {path}' HEAD"
+produces: "reports/git-hot.txt"
