@@ -11,8 +11,8 @@ package_manager: "bun"
 bundler: "rollup"
 project: packages/domain/package.json
 tests: tests/
-tools_project: tools/
-pinned-version: "0.34.6"
+tools_project: "Tool Triggering (Synthetic Data)/"
+pinned-version: "4.1.11"
 config: "vitest.config.ts"
 target_files: [tests, packages/domain/src]
 command: "node_modules/.bin/vitest run --config vitest.config.ts --coverage"
