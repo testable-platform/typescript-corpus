@@ -1,0 +1,19 @@
+tool: cccc
+label: "cccc"
+language: typescript
+node_version: "20"
+typescript_version: "5.9.3"
+branch: "TS-101"
+scenario: "1 - Monolithic"
+architecture: "Monolith"
+module: "flat"
+package_manager: "pnpm"
+bundler: "esbuild"
+project: package.json
+tests: tests/
+tools_project: "Tool Triggering (Synthetic Data)/"
+pinned-version: null  # not an npm package -- see the runner
+config: null
+target_files: [Tool Clean (Synthetic Data)/cccc]
+command: "cccc --outdir=reports/cccc <boiler_room.c from Tool Clean (Synthetic Data)/cccc>"
+produces: "reports/cccc/cccc.xml -- CCCC report on the real C source (cccc cannot parse TypeScript; see the runner)"
