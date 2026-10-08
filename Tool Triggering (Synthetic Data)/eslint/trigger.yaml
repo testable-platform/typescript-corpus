@@ -11,9 +11,9 @@ package_manager: "yarn (Berry)"
 bundler: "vite"
 project: package.json
 tests: tests/
-tools_project: tools/
-pinned-version: "8.57.1"
+tools_project: "Tool Triggering (Synthetic Data)/"
+pinned-version: "9.39.5"
 config: "eslint.config.mjs"
 target_files: [src, src/analysis/lint-violations.ts]
-command: "node_modules/.bin/eslint 'src/**/*.ts' --format unix"
+command: "node_modules/.bin/eslint 'src/**/*.ts' --format stylish"
 expects_findings: true
