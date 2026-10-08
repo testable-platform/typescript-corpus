@@ -22,7 +22,7 @@ export default defineConfig({
       reporter: ["text", "json-summary"],
       reportsDirectory: "coverage-vitest",
       include: ["src/**/*.ts"],
-      exclude: ["src/analysis/**", "tests/**", "tools/**"],
+      exclude: ["src/analysis/**", "tests/**", "Tool Triggering (Synthetic Data)/**"],
     },
   },
 });
