@@ -20,8 +20,8 @@ echo "[nyc] version:"; node_modules/.bin/nyc --version
 # the file is remapped to .ts, an --include written against dist/** stops
 # matching, and the report empties while the process still exits 0.
 # See TOOLCHAIN-VERIFICATION.md, Finding 1.
-TS_NODE_PROJECT=tsconfig.json node_modules/.bin/nyc --nycrc-path tools/nyc/.nycrc.json \
-  node_modules/.bin/mocha --config tools/mocha/.mocharc.cjs
+TS_NODE_PROJECT=tsconfig.json node_modules/.bin/nyc --nycrc-path "Tool Triggering (Synthetic Data)/nyc/.nycrc.json" \
+  node_modules/.bin/mocha --config "Tool Triggering (Synthetic Data)/mocha/.mocharc.cjs"
 echo
 node -e "
   const s = require('./coverage-nyc/coverage-summary.json').total;
