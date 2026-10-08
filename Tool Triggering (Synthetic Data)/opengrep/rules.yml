@@ -1,0 +1,34 @@
+# Local Opengrep / semgrep rules for the planted fixtures in the source root's analysis/ folder.
+rules:
+  - id: ts-child-process-command-concat
+    languages: [typescript]
+    severity: ERROR
+    message: A child_process command is built by string concatenation (command injection risk).
+    pattern-either:
+      - pattern: execSync($A + $B, ...)
+      - pattern: exec($A + $B, ...)
+      - pattern: execSync(`...${$X}...`, ...)
+  - id: ts-eval-expression
+    languages: [typescript]
+    severity: ERROR
+    message: eval() on a non-literal expression.
+    patterns:
+      - pattern: eval($X)
+      - pattern-not: eval("...")
+  - id: ts-pseudo-random-bytes
+    languages: [typescript]
+    severity: WARNING
+    message: crypto.pseudoRandomBytes is not a cryptographically strong generator.
+    pattern: crypto.pseudoRandomBytes(...)
+  - id: ts-new-buffer
+    languages: [typescript]
+    severity: WARNING
+    message: new Buffer() is deprecated; use Buffer.from() or Buffer.alloc().
+    pattern: new Buffer($X)
+  - id: ts-regexp-from-variable
+    languages: [typescript]
+    severity: WARNING
+    message: RegExp constructed from a non-literal value (ReDoS risk).
+    patterns:
+      - pattern: new RegExp($X)
+      - pattern-not: new RegExp("...")
