@@ -20,8 +20,8 @@ echo "[jscpd] version:"; node_modules/.bin/jscpd --version
 # at --min-tokens 20.
 #
 # TRAP: jscpd 3.2.1 resolves scan paths relative to the CONFIG FILE'S DIRECTORY,
-# not the working directory. With the config under tools/jscpd/, a path of
-# "src" is looked up as tools/jscpd/src, which does not exist -- so jscpd
+# not the working directory. With the config under Tool Triggering (Synthetic Data)/jscpd/, a path of
+# "src" is looked up as Tool Triggering (Synthetic Data)/jscpd/src, which does not exist -- so jscpd
 # scans nothing, reports nothing, and STILL EXITS 0. The `path` key inside the
 # config file is ignored entirely; only the CLI argument is honoured.
 # Hence: config at the repo root, path passed explicitly.
