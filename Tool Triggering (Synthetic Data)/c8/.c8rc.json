@@ -2,7 +2,7 @@
   "all": true,
   "src": ["packages/domain/src"],
   "include": ["packages/domain/src/**/*.ts"],
-  "exclude": ["packages/domain/src/analysis/**", "tests/**", "tools/**", "dist/**", "build/**"],
+  "exclude": ["packages/domain/src/analysis/**", "tests/**", "Tool Triggering (Synthetic Data)/**", "dist/**", "build/**"],
   "reporter": ["text", "json-summary", "lcov"],
   "reports-dir": "coverage",
   "temp-directory": ".c8_output",
