@@ -1,23 +1,22 @@
 # OSV-Scanner
 
-Synthetic, clean-by-design TypeScript project for **OSV-Scanner**.
+Synthetic, **deliberately invalid** TypeScript project for **OSV-Scanner** -- the negative-control twin of `TypeScript-Tools-Clean/OSV-Scanner`, built so the tool genuinely finds something wrong rather than reporting clean.
 
-Package: github.com/google/osv-scanner (Go binary / GitHub release)
+Package: OSV-Scanner 2.6.0 -- github.com/google/osv-scanner (Go binary / GitHub release)
+Domain: cordwood stack inventory (CordwoodStack) (same fixture identity as the clean corpus; only the content is broken)
 
-Domain: cordwood stack inventory (CordwoodStack)
+**Measured**: installed (or built from real source) and actually invoked in the build environment; the result below is real, not asserted.
 
-**Not installed here**: see Notes for why, and what was checked instead.
+## What was made wrong, and why it's wrong enough
 
-## What a passing result looks like
-
-An OSV-Scanner run against CordwoodStack's lockfile would report zero known-vulnerable packages.
+`sbom.cdx.json` and `package.json` now also list `lodash` 4.17.15, `minimist` 1.2.5, `axios` 0.21.0, `node-fetch` 2.6.0, `tar` 6.1.0 -- exact pins that have known advisories. (Before this change the Invalid folder was byte-identical to the Clean one, so it could not report anything.)
 
 ## Command
 
 ```bash
-osv-scanner --lockfile package-lock.json
+osv-scanner scan source -L sbom.cdx.json      # or:  osv-scanner scan source .   (auto-detects *.cdx.json)
 ```
 
 ## Notes
 
-Same shape of blocker as Grype: GitHub Releases return 403 here and `go install github.com/google/osv-scanner/cmd/osv-scanner@latest` is refused by the same golang proxy allowlist. No apt package exists.
+OSV-Scanner 2.6.0 reads CycloneDX SBOMs (file name `*.cdx.json`). Measured 2026-10-07 with the real v2.6.0 binary: `osv-scanner scan source -S sbom.cdx.json` printed `Scanned .../sbom.cdx.json file and found 2 packages` for the Clean file and `... found 7 packages` for the Invalid file; the vulnerability lookup that follows (`POST https://api.osv.dev/v1/querybatch`) returned 403 in that session, so no advisory count is quoted. The folder has **no lockfile** on purpose: a `package-lock.json` in a sub-folder makes Testable treat the folder as its own project (one extra task per tool), so the dependency inventory is supplied as a CycloneDX 1.5 SBOM instead.
