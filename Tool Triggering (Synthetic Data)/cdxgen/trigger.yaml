@@ -11,8 +11,8 @@ package_manager: "yarn (Berry)"
 bundler: "rollup"
 project: package.json
 tests: tests/
-tools_project: tools/
-pinned-version: "8.6.3"
+tools_project: "Tool Triggering (Synthetic Data)/"
+pinned-version: "12.8.4"
 config: null
 target_files: [package.json]
 command: "node_modules/.bin/cdxgen -t nodejs -o reports/sbom.json ."
