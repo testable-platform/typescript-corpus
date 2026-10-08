@@ -1,0 +1,19 @@
+tool: license-checker
+label: "license-checker-rseidelsohn"
+language: typescript
+node_version: "22"
+typescript_version: "5.9.3"
+branch: "TS-153"
+scenario: "1 - Monolithic"
+architecture: "Monolith"
+module: "flat"
+package_manager: "npm"
+bundler: "vite"
+project: package.json
+tests: tests/
+tools_project: "Tool Triggering (Synthetic Data)/"
+pinned-version: "4.4.2"  # installed on demand into reports/.tool-cache, not a package.json dependency
+config: null
+target_files: [package.json]
+command: "license-checker-rseidelsohn --json --production --excludePrivatePackages --out reports/license-checker.json"
+produces: "reports/license-checker.json"
