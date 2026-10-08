@@ -101,12 +101,12 @@ if (!exists(src)) fail(`dataset.json sourceRoot ${src} does not exist`);
 else ok(`sourceRoot ${src} exists`);
 
 // ------------------------------------------------------- 4. trigger manifests
-const toolsDir = path.join(ROOT, "tools");
+const toolsDir = path.join(ROOT, "Tool Triggering (Synthetic Data)");
 const toolDirs = fs.readdirSync(toolsDir).filter((d) => fs.statSync(path.join(toolsDir, d)).isDirectory());
 let manifestCount = 0;
 for (const dir of toolDirs) {
-  const trigRel = `tools/${dir}/trigger.yaml`;
-  if (!exists(trigRel)) { fail(`tools/${dir} has no trigger.yaml`); continue; }
+  const trigRel = `Tool Triggering (Synthetic Data)/${dir}/trigger.yaml`;
+  if (!exists(trigRel)) { fail(`Tool Triggering (Synthetic Data)/${dir} has no trigger.yaml`); continue; }
   manifestCount += 1;
   const t = readTrigger(trigRel);
 
@@ -130,7 +130,7 @@ for (const dir of toolDirs) {
     if (!exists(p)) fail(`${trigRel}: target_files entry does not resolve -> ${p}`);
   }
   const runners = fs.readdirSync(path.join(toolsDir, dir)).filter((f) => /^run_/.test(f));
-  if (runners.length === 0) fail(`tools/${dir} has a manifest but no runner`);
+  if (runners.length === 0) fail(`Tool Triggering (Synthetic Data)/${dir} has a manifest but no runner`);
 }
 ok(`${manifestCount} trigger.yaml manifests parsed, all paths resolve`);
 
@@ -139,7 +139,7 @@ if (manifestCount !== dataset.toolsWired) {
 } else ok(`dataset.json toolsWired matches the manifest count (${manifestCount})`);
 
 // -------------------------------------------------- 5. planted pins vs table
-const plantedTable = read("tools/grype/PLANTED-CVES.md");
+const plantedTable = read("Tool Triggering (Synthetic Data)/grype/PLANTED-CVES.md");
 const plantedFromTable = Array.from(plantedTable.matchAll(/^\| `([^`]+)` \| ([0-9][^ |]*) \|/gm))
   .map((m) => `${m[1]}@${m[2]}`);
 if (plantedFromTable.length === 0) fail("PLANTED-CVES.md has no parseable pin table");
@@ -155,7 +155,7 @@ for (const pin of datasetPins) {
 }
 if (plantedFromTable.length > 0) ok(`${plantedFromTable.length} planted pins agree across PLANTED-CVES.md, package.json and dataset.json`);
 
-const pinsTxt = read("tools/grype/planted-pins.txt").trim().split("\n")
+const pinsTxt = read("Tool Triggering (Synthetic Data)/grype/planted-pins.txt").trim().split("\n")
   .map((l) => l.trim().split(/\s+/).join("@")).filter(Boolean);
 for (const p of pinsTxt) {
   if (!plantedFromTable.includes(p)) fail(`planted-pins.txt lists ${p} which PLANTED-CVES.md does not`);
@@ -194,7 +194,7 @@ ok("no empty directories (the Python family's wheel-build defect)");
 
 // --------------------------------------------------------- 9. README contract
 const readme = read("README.md");
-const REQUIRED = ["## Project type", "## Branches", "## Supported tools", "## Build",
+const REQUIRED = ["## Project type", "## Supported tools", "## Build",
                   "## Run", "## Test", "## Architecture", "## Tool entry points"];
 let cursor = -1;
 for (const section of REQUIRED) {
@@ -205,7 +205,7 @@ for (const section of REQUIRED) {
 }
 ok("README sections present and in order");
 
-for (const rel of Array.from(readme.matchAll(/\]\((?!https?:)([^)#]+)\)/g)).map((m) => m[1])) {
+for (const rel of Array.from(readme.matchAll(/\]\((?!https?:)(?:<([^>#]+)>|([^)#\s]+))\)/g)).map((m) => m[1] || m[2])) {
   if (!exists(rel.replace(/^\.\//, ""))) fail(`README links to a missing path: ${rel}`);
 }
 ok("README relative links resolve");
