@@ -1,0 +1,19 @@
+tool: covgate
+label: "covgate"
+language: typescript
+node_version: "22"
+typescript_version: "5.9.3"
+branch: "TS-166"
+scenario: "2 - Microservices"
+architecture: "Microservices"
+module: "workspace"
+package_manager: "pnpm"
+bundler: "rollup"
+project: packages/domain/package.json
+tests: tests/
+tools_project: "Tool Triggering (Synthetic Data)/"
+pinned-version: null  # not an npm package -- see the runner
+config: "Tool Triggering (Synthetic Data)/covgate/covgate.toml"
+target_files: [reports/covgate/coverage-final.json]
+command: "covgate check coverage-final.json --diff-file <git diff HEAD~1 HEAD> --markdown-output reports/covgate.md"
+produces: "reports/covgate.md"
