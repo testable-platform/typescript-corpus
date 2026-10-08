@@ -11,9 +11,9 @@ package_manager: "yarn (Berry)"
 bundler: "rollup"
 project: packages/domain/package.json
 tests: tests/
-tools_project: tools/
-pinned-version: "10.8.2"
-config: "tools/mocha/.mocharc.cjs"
+tools_project: "Tool Triggering (Synthetic Data)/"
+pinned-version: "11.8.0"
+config: "Tool Triggering (Synthetic Data)/mocha/.mocharc.cjs"
 target_files: [tests]
-command: "node_modules/.bin/mocha --config tools/mocha/.mocharc.cjs"
+command: "node_modules/.bin/mocha --config 'Tool Triggering (Synthetic Data)/mocha/.mocharc.cjs'"
 produces: "test results (all must pass)"
