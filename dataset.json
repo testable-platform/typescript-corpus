@@ -22,7 +22,7 @@
     "packages/*",
     "services/*"
   ],
-  "toolsWired": 29,
+  "toolsWired": 49,
   "bundlerNote": "vite 5.4.21 -- THREE majors behind current (8.2.2). vite 6+ declares ^20.19.0 || >=22.12.0, which excludes Node 21. Transform: its own bundled esbuild ~0.21.x. Linker: Rollup.",
   "coveragePrimary": "c8",
   "coverageCrossCheck": "nyc + ts-node",
@@ -45,10 +45,7 @@
     ]
   },
   "toolsSkipped": {
-    "OSV-Scanner": "api.osv.dev unreachable -- 403 at the egress proxy",
-    "npm downloads API": "api.npmjs.org unreachable -- 403 at the egress proxy",
-    "npm-check-updates@19.6.6": "requires Node >=18; pinned to 16.14.20 instead",
-    "_note": "All 29 tools are wired. Note the versions: Node 21 is not an LTS major, so twelve tools resolve OLDER here than on Node 20 despite the runtime being newer -- see DEV_DEPS in the generator, and TRAPS-NODE21.md.",
-    "@types/node@21": "no such package -- DefinitelyTyped publishes LTS majors only; pinned to 20.19.9"
+    "@types/node@21": "no such package -- DefinitelyTyped publishes LTS majors only; pinned to 20.19.9",
+    "_note": "All 29 tools are wired. Note the versions: Node 21 is not an LTS major, so twelve tools resolve OLDER here than on Node 20 despite the runtime being newer -- see DEV_DEPS in the generator, and TRAPS-NODE21.md."
   }
 }
