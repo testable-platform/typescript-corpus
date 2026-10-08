@@ -1,0 +1,20 @@
+tool: osv-scanner
+label: "OSV-Scanner"
+language: typescript
+node_version: "24"
+typescript_version: "5.9.3"
+branch: "TS-189"
+scenario: "1 - Monolithic"
+architecture: "Monolith"
+module: "flat"
+package_manager: "pnpm"
+bundler: "rollup"
+project: package.json
+tests: tests/
+tools_project: "Tool Triggering (Synthetic Data)/"
+pinned-version: null  # not an npm package -- see the runner
+config: null
+target_files: [reports/sbom.json]
+command: "node osv_query.cjs reports/sbom.json reports/osv.json  (+ osv-scanner scan source -L pnpm-lock.yaml when the CLI is installed)"
+expects_findings: true
+produces: "reports/osv.json -- vulnerable packages of the cdxgen SBOM"
