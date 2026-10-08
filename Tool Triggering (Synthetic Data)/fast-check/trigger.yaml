@@ -11,9 +11,9 @@ package_manager: "bun"
 bundler: "rollup"
 project: packages/domain/package.json
 tests: tests/
-tools_project: tools/
+tools_project: "Tool Triggering (Synthetic Data)/"
 pinned-version: "4.9.0"
-config: "tools/mocha/.mocharc.cjs"
+config: "Tool Triggering (Synthetic Data)/mocha/.mocharc.cjs"
 target_files: [tests/property.spec.ts]
-command: "node_modules/.bin/mocha --config tools/mocha/.mocharc.cjs --grep 'properties'"
+command: "node_modules/.bin/mocha --config 'Tool Triggering (Synthetic Data)/mocha/.mocharc.cjs' --grep 'properties'"
 produces: "property-based test results, 200 runs per property"
