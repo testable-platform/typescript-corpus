@@ -17,7 +17,7 @@
     "typescript-n22-ts-149"
   ],
   "workspaces": [],
-  "toolsWired": 29,
+  "toolsWired": 49,
   "bundlerNote": "esbuild 0.28.2 standalone (current major, engines >=18). Transform and linker are both esbuild.",
   "coveragePrimary": "c8",
   "coverageCrossCheck": "nyc + ts-node",
@@ -40,9 +40,6 @@
     ]
   },
   "toolsSkipped": {
-    "OSV-Scanner": "api.osv.dev unreachable -- 403 at the egress proxy",
-    "npm downloads API": "api.npmjs.org unreachable -- 403 at the egress proxy",
-    "npm-check-updates@19.6.6": "requires Node >=18; pinned to 16.14.20 instead",
     "_note": "All 29 tools are wired, every one at its current major. Node 22 is an active LTS line, so it is the first runtime in the corpus where no tool is held back by the runtime -- the only ceiling left is madge's TypeScript peer. See TRAPS-NODE22.md."
   }
 }
