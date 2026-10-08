@@ -12,35 +12,47 @@ This is branch **TS_V21_ROLLUP_PNPM_MONO** of the consolidated `typescript-corpu
 - **Scenario:** 1 - Monolithic
 - **Architecture:** Monolith
 - **Module layout:** flat
-- **Bundler:** Rollup 2.80.0 (Rollup linker + tsc 5.0.4 transform)
+- **Bundler:** Rollup 4.62.5 (Rollup linker + tsc 5.9.3 transform)
 - **Package manager:** pnpm 12.2.1
 - **Source root:** `src`
 
-Node 12 is end-of-life, and that is deliberate: it pins the entire toolchain to
-the last release of each tool that still supports it. Every version in this
+Each tool is pinned to the release that was resolved for Node 21; `dataset.json`
+records the tools that were skipped and why. Every version in this
 repository was resolved against the live npm registry and then executed on a
 real Node 21.7.3 interpreter. None was written from memory.
 
 ## Supported tools
 
-26 tool families are wired. Each has a folder under `Tool Triggering (Synthetic Data)/` containing a
+49 tool families are wired. Each has a folder under `Tool Triggering (Synthetic Data)/` containing a
 `trigger.yaml` manifest, a runner, and its configuration.
 
 | Family | Pinned | Family | Pinned |
 |---|---|---|---|
-| TypeScript (tsc) | 5.0.4 | ts-morph | 18.0.0 |
+| TypeScript (tsc) | 5.9.3 | ts-morph | 27.0.2 |
 | rollup | 4.62.5 | ts-prune | 0.10.3 |
-| mocha | 9.2.2 | madge | 5.0.2 |
-| c8 (coverage, primary) | 8.0.1 | dependency-cruiser | 11.18.0 |
-| nyc + ts-node (cross-check) | 15.1.0 | Stryker | 5.6.1 |
-| eslint | 8.57.1 | fast-check | 4.9.0 |
-| @typescript-eslint | 5.62.0 | cdxgen | 8.6.3 |
-| eslint-plugin-sonarjs | 0.15.0 | ORT (cdxgen licence proxy) | n/a |
-| eslint-plugin-security | 2.1.1 | npm-check-updates | 12.5.12 |
-| eslint-scope | 7.2.2 | pnpm audit / ls | 12.2.1 |
-| jscpd | 3.2.1 | OpenTelemetry sdk-node | 0.29.2 |
+| mocha | 11.8.0 | madge | 8.0.0 |
+| c8 (coverage, primary) | 10.1.3 | dependency-cruiser | 16.10.4 |
+| nyc + ts-node (cross-check) | 17.1.0 | Stryker | 9.6.1 |
+| eslint | 9.39.5 | fast-check | 4.9.0 |
+| @typescript-eslint | 8.68.0 | cdxgen | 11.11.0 |
+| eslint-plugin-sonarjs | 4.2.0 | ORT (cdxgen licence proxy) | n/a |
+| eslint-plugin-security | 4.0.1 | npm-check-updates | 20.0.2 |
+| eslint-scope | 8.4.0 | pnpm audit / ls | 12.2.1 |
+| jscpd | 5.0.16 | OpenTelemetry sdk-node | 0.221.0 |
 | Grype | v0.110.0 (binary) | Lizard | pip |
 | pydriller | pip | GitHub Advisories + API | REST |
+| knip | 5.88.1 | vitest + @vitest/coverage-v8 | 2.1.9 |
+| @biomejs/biome | 2.5.10 | cccc | 3.2.0 (apt) |
+| debtmap | 0.24.1 (cargo) | oxlint | 1.16.0 |
+| Bearer CLI | v2.1.1 (binary) | CVE Lite CLI | 1.38.0 |
+| license-checker-rseidelsohn | 4.4.2 | OSV-Scanner | OSV API v1 (CLI v2.6.0) |
+| monocart-coverage-reports | 2.13.2 | oxc-coverage-instrument | 0.13.0 |
+| mewt | 4.0.0 (cargo) | diff-cover | 10.6.0 (pip) |
+| ts-unused-exports | 11.0.1 | red-dragon | c287bb2 (git) |
+| Opengrep | v1.30.1 (binary) | covgate | 0.2.0 (cargo) |
+| reson | v1.4.1 (cargo) | DepScout | 1.0.0 |
+| TraceGraph (@tracegraph/trace-js) | 0.3.1 | git-hot | 0.11.1 (pip) |
+| npm downloads API | api.npmjs.org |  |  |
 
 ### Tools deliberately NOT wired
 
@@ -48,25 +60,21 @@ Skipping these is a finding, not an omission. See [`dataset.json`](dataset.json)
 
 | Tool | Reason |
 |---|---|
-| knip | no published version supports Node 12 |
-| vitest + @vitest/coverage-v8 | no published version supports Node 12 |
-| @biomejs/biome | oldest published version already requires Node >=14.21.3 |
-| OSV-Scanner | `api.osv.dev` unreachable -- 403 at the egress proxy |
-| npm downloads API | `api.npmjs.org` unreachable -- 403 at the egress proxy |
-| npm-check-updates 19.6.6 | requires Node >=18; 12.5.12 is pinned instead |
+|  types/node 21 | no such package -- DefinitelyTyped publishes LTS majors only; pinned to 20.19.9 |
 
 Declaring any of these would have produced a metric that cannot be computed.
 
 ## Build
 
 ```bash
-npm i -g pnpm@6.35.1
+npm i -g pnpm@12.2.1
 pnpm install --frozen-lockfile
-make build
+pnpm run build
+pnpm run bundle
 ```
 
-`make build` type-checks with `tsc --noEmit`, emits CommonJS + declarations to
-`dist/`, then bundles with **Rollup 2.80.0 (Rollup linker + tsc 5.0.4 transform)** and **executes the bundle**.
+`pnpm run build` type-checks with `tsc --noEmit` and emits CommonJS + declarations to
+`dist/`; `pnpm run bundle` then bundles with **Rollup 4.62.5 (Rollup linker + tsc 5.9.3 transform)** and **executes the bundle**.
 Emitting is not proof; running it is.
 
 ## Run
@@ -78,8 +86,8 @@ node dist/src/index.js
 ## Test
 
 ```bash
-make test        # mocha over tests/
-make coverage    # c8 (primary) AND nyc + ts-node (cross-check)
+pnpm run test        # mocha over tests/
+pnpm run coverage    # c8 (primary) AND nyc + ts-node (cross-check)
 ```
 
 Both coverage tools must report non-zero. They deliberately disagree: c8 reads
@@ -137,7 +145,7 @@ Three sibling folders sit at the repo root, alongside this branch's own
 `Tool Triggering (Synthetic Data)/` (above).
 
 ### `Tool Triggering (Tool Github Test data)/`
-Each of the 33 tool subfolders is that tool's own real upstream code and test
+Each of the 39 tool subfolders is that tool's own real upstream code and test
 suite, pulled as-is from its actual GitHub project -- not generated. `covgate/`
 is the clearest case: it's genuinely Rust, not TypeScript -- `cli_interface.rs`,
 `coverage_parse.rs`, `gate.rs`, `git_module.rs`, `metrics.rs`,
@@ -145,10 +153,10 @@ is the clearest case: it's genuinely Rust, not TypeScript -- `cli_interface.rs`,
 and `support/` test directories, straight from the covgate project. `ESLint/`,
 `StrykerJS/`, `Opengrep/`, `pydriller/` and the rest are each that project's
 own real test suite. A correct run finds whatever that upstream project's own
-tests genuinely contain.
+tests genuinely contain. `TraceGraph/` is the exception: it holds only a note, because that project publishes no public repository.
 
 ### `Tool Clean (Synthetic Data)/`
-Most of the 33 tools each carry 5 generated fixture packages, one per Node
+25 of the 40 tools each carry 5 generated fixture packages, one per Node
 family (12, 14, 20, 24, 26), engineered to be clean so the tool should report
 zero findings: the **Tool Clean (100% pass)** condition. `covgate` is the
 exception within the exception: because it builds a native binary per Node
@@ -157,13 +165,13 @@ full self-contained package with its own git history, plus a 6th git history
 at the `covgate/` root -- 6 separate repositories in total. `diff-cover` and
 `pydriller` operate on git history rather than language syntax, so each
 carries one real git repository's worth of history instead of 5 per-version
-copies. All 8 of these git histories (6 covgate + diff-cover + pydriller) are
+copies. 13 other tools (`Bearer CLI`, `CVE Lite CLI`, `DepScout`, `Dependabot`, `GitHub API`, `Grype`, `ORT`, `OSV-Scanner`, `SonarJS`, `TraceGraph`, `git-hot`, `red-dragon`, `reson`) carry a single flat `src/` fixture rather than per-Node copies. All 8 of these git histories (6 covgate + diff-cover + pydriller) are
 restored from `_git-bundles/` via `restore-git.ps1` rather than kept as live
 `.git` folders, so a plain file copy never silently drops their content as a
 submodule-style gitlink.
 
 ### `Tool Invalid (Synthetic Data)/`
-Same shape as Clean -- 33 tools, the same 5-Node-version pattern, and the same
+Same shape as Clean -- 40 tools, the same 5-Node-version pattern, and the same
 covgate exception -- but engineered so every fixture makes the tool flag or
 fail rather than pass: the **Tool Invalid** condition. Only covgate's 6 git
 histories needed bundling here (`_git-bundles/` + `restore-git.ps1`, alongside
@@ -194,14 +202,17 @@ typescript-corpus/  (TS_V21_ROLLUP_PNPM_MONO)
 |-- .github/  (1 files)
 |-- src/  (16 files)
 |-- tests/  (6 files)
-|-- Tool Triggering (Synthetic Data)/  (68 files)
+|-- Tool Clean (Synthetic Data)/  (652 files)
+|-- Tool Invalid (Synthetic Data)/  (864 files)
+|-- Tool Triggering (Synthetic Data)/  (115 files)
+|-- Tool Triggering (Tool Github Test data)/  (22088 files)
 |-- .editorconfig
 |-- .gitignore
 |-- .jscpd.json
 |-- .madgerc
 |-- .npmrc
 |-- .nvmrc
-|-- Makefile
+|-- README.md
 |-- biome.json
 |-- dataset.json
 |-- eslint.config.mjs
