@@ -20,9 +20,9 @@ echo "[depcruise] version:"; node_modules/.bin/depcruise --version
 # "no dependency violations found (0 modules, 0 dependencies cruised)" -- with
 # exit code 0. A glob is required. `options.extensions` is not a valid v11
 # option and makes the whole config fail schema validation.
-node_modules/.bin/depcruise --config tools/dependency-cruiser/.dependency-cruiser.cjs \
+node_modules/.bin/depcruise --config "Tool Triggering (Synthetic Data)/dependency-cruiser/.dependency-cruiser.cjs" \
   --output-type json 'src/**/*.ts' > reports/depcruise.json || true
-node_modules/.bin/depcruise --config tools/dependency-cruiser/.dependency-cruiser.cjs \
+node_modules/.bin/depcruise --config "Tool Triggering (Synthetic Data)/dependency-cruiser/.dependency-cruiser.cjs" \
   --output-type err 'src/**/*.ts' || true
 node -e "
   const r = require('./reports/depcruise.json');
