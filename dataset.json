@@ -17,7 +17,7 @@
     "typescript-n21-ts-123"
   ],
   "workspaces": [],
-  "toolsWired": 29,
+  "toolsWired": 49,
   "bundlerNote": "esbuild 0.28.2 standalone (current major, engines >=18). Transform and linker are both esbuild.",
   "coveragePrimary": "c8",
   "coverageCrossCheck": "nyc + ts-node",
@@ -40,10 +40,7 @@
     ]
   },
   "toolsSkipped": {
-    "OSV-Scanner": "api.osv.dev unreachable -- 403 at the egress proxy",
-    "npm downloads API": "api.npmjs.org unreachable -- 403 at the egress proxy",
-    "npm-check-updates@19.6.6": "requires Node >=18; pinned to 16.14.20 instead",
-    "_note": "All 29 tools are wired. Note the versions: Node 21 is not an LTS major, so twelve tools resolve OLDER here than on Node 20 despite the runtime being newer -- see DEV_DEPS in the generator, and TRAPS-NODE21.md.",
-    "@types/node@21": "no such package -- DefinitelyTyped publishes LTS majors only; pinned to 20.19.9"
+    "@types/node@21": "no such package -- DefinitelyTyped publishes LTS majors only; pinned to 20.19.9",
+    "_note": "All 29 tools are wired. Note the versions: Node 21 is not an LTS major, so twelve tools resolve OLDER here than on Node 20 despite the runtime being newer -- see DEV_DEPS in the generator, and TRAPS-NODE21.md."
   }
 }
